@@ -2,6 +2,12 @@
 https://github.com/DarvanneTapayan/inventory_management open for source code
 Extensions used: xampp, php vanilla, chatgpt, mysql phpmyadmin, visual studio code, github desktop
 
+Reminders: 
+1. Make sure you import the database inventory_managemeny.sql into phpmyadmin.
+2. Make sure to paste the source code in the HTDOCS otherwise it won't work.
+3. This is not complete yet but you can help me modify and enhance the code.
+4. Have fun.
+
 ### Inventory Management System User Guide
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
