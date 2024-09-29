@@ -1,5 +1,6 @@
 
-https://github.com/DarvanneTapayan/inventory_management open for source code
+https://github.com/DarvanneTapayan/inventory_management open for source code.
+
 Extensions used: xampp, php vanilla, chatgpt, mysql phpmyadmin, visual studio code, github desktop
 
 Reminders: 
