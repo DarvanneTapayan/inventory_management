@@ -1,34 +1,22 @@
 <?php
 class Database {
-    private $conn; // Connection variable
+    private $host = "localhost";
+    private $db_name = "inventory_management"; // Your database name
+    private $username = "root"; // Your database username
+    private $password = ""; // Your database password
+    public $conn;
 
-    public function __construct($db_connection) {
-        $this->conn = $db_connection; // Use the provided database connection
-    }
+    public function getConnection() {
+        $this->conn = null;
 
-    // Method to execute a query
-    public function execute($query, $params = []) {
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute($params);
-        return $stmt;
-    }
+        try {
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $exception) {
+            echo "Connection error: " . $exception->getMessage();
+        }
 
-    // Method to fetch all results
-    public function fetchAll($query, $params = []) {
-        $stmt = $this->execute($query, $params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Method to fetch a single result
-    public function fetchOne($query, $params = []) {
-        $stmt = $this->execute($query, $params);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    // Method to execute insert, update, delete
-    public function executeUpdate($query, $params = []) {
-        $stmt = $this->execute($query, $params);
-        return $stmt->rowCount(); // Return number of affected rows
+        return $this->conn;
     }
 }
 ?>
