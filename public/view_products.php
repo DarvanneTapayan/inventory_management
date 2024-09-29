@@ -18,7 +18,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 $product = new Product($db);
-$products = $product->read();
+$products = $product->read(); // Fetch all products
 
 // Include header
 include_once '../templates/header.php';

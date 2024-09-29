@@ -7,6 +7,7 @@ class User {
         $this->conn = $db;
     }
 
+    // Create a new user
     public function create($username, $password, $email, $role_id) {
         $query = "INSERT INTO " . $this->table_name . " (username, password, email, role_id) VALUES (:username, :password, :email, :role_id)";
         $stmt = $this->conn->prepare($query);
@@ -22,6 +23,7 @@ class User {
         return $stmt->execute();
     }
 
+    // User login
     public function login($username, $password) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE username = :username";
         $stmt = $this->conn->prepare($query);
@@ -37,12 +39,13 @@ class User {
         return null; // Return null if login fails
     }
 
-    public function hasRole($role_name) {
+    // Check if user has a specific role
+    public function hasRole($user_id, $role_name) {
         $query = "SELECT r.role_name FROM " . $this->table_name . " u
                   JOIN roles r ON u.role_id = r.role_id
                   WHERE u.user_id = :user_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':user_id', $this->user_id);
+        $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
     
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -51,4 +54,14 @@ class User {
         return false;
     }
     
+    // Fetch a user by ID
+    public function readById($user_id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
+?>

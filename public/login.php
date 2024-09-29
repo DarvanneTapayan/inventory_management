@@ -1,35 +1,25 @@
 <?php
 session_start();
 include_once '../config/database.php';
+include_once '../classes/User.php'; // Include User class
 
 $database = new Database();
 $db = $database->getConnection();
 
-// Hardcoded credentials for demo purposes (replace this with database check in a real application)
-$users = [
-    ['username' => 'admin', 'password' => 'admin123', 'role_id' => 1],
-    ['username' => 'manager', 'password' => 'manager123', 'role_id' => 2],
-    ['username' => 'staff', 'password' => 'staff123', 'role_id' => 3],
-];
-
+$user = new User($db);
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Check user credentials
-    $found = false;
-    foreach ($users as $user) {
-        if ($user['username'] === $username && $user['password'] === $password) {
-            $_SESSION['user_id'] = $username; // You might want to use a user ID instead
-            $_SESSION['role_id'] = $user['role_id'];
-            $found = true;
-            break;
-        }
-    }
+    // Validate user credentials
+    $user_data = $user->login($username, $password);
 
-    if ($found) {
+    if ($user_data) {
+        $_SESSION['user_id'] = $user_data['username']; // or user ID if available
+        $_SESSION['role_id'] = $user_data['role_id'];
+
         // Redirect based on role
         switch ($_SESSION['role_id']) {
             case 1:
@@ -41,6 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             case 3:
                 header("Location: staff_dashboard.php");
                 break;
+            case 4: // Customer
+                header("Location: customer_dashboard.php"); // Create a dashboard for customers
+                break;
+            default:
+                header("Location: index.php");
         }
         exit;
     } else {
@@ -67,5 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
+    <a href="signup.php">Create an account.</a>
 </body>
 </html>
