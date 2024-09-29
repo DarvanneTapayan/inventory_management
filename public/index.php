@@ -13,23 +13,20 @@ include_once '../templates/header.php';
     <title>Inventory Management</title>
 </head>
 <body>
-    <nav>
-        <h2>Manage</h2>
-        <ul>
-            <li><a href="add_product.php">Add Product</a></li>
-            <li><a href="view_products.php">View Products</a></li>
-            <li><a href="add_category.php">Add Category</a></li>
-            <li><a href="view_categories.php">View Categories</a></li>
-            <li><a href="add_supplier.php">Add Supplier</a></li>
-            <li><a href="view_suppliers.php">View Suppliers</a></li>
-            <li><a href="add_purchase_order.php">Add Purchase Order</a></li>
-            <li><a href="view_purchase_orders.php">View Purchase Orders</a></li>
-            <li><a href="add_sale.php">Add Sale</a></li>
-            <li><a href="view_sales.php">View Sales</a></li>
-            <li><a href="add_inventory_adjustment.php">Add Inventory Adjustment</a></li>
-            <li><a href="view_inventory_adjustments.php">View Inventory Adjustments</a></li>
-        </ul>
-    </nav>
+    <main>
+        <section>
+            <div>
+                <h1>
+                    Welcome to our inventory management system
+                </h1>
+            </div>
+        </section>
+        <section>
+            <div>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur doloremque consequuntur eos iure architecto harum ullam eligendi nobis temporibus enim repudiandae voluptas necessitatibus repellat, consectetur impedit, inventore aperiam omnis eveniet!</p>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
 <?php

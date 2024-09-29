@@ -27,7 +27,7 @@ include_once '../templates/header.php';
 <h1>Purchase Orders List</h1>
 <table border="1">
     <tr>
-        <th>Order ID</th>
+        <th>Purchase Order ID</th>
         <th>Supplier ID</th>
         <th>Order Date</th>
         <th>Status</th>
