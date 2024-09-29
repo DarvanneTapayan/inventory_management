@@ -1,44 +1,54 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 4) { // Ensure user is logged in as Customer
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
     header("Location: login.php");
     exit;
 }
 
-// Include necessary classes
 include_once '../config/database.php';
 include_once '../classes/Order.php';
 
 $database = new Database();
 $db = $database->getConnection();
-
 $order = new Order($db);
-$orders = $order->readByCustomer($_SESSION['user_id']); // Fetch orders for the logged-in customer
+
+// Fetch all orders
+$orders = $order->read(); // Implement this method to fetch all orders
 
 // Include header
 include_once '../templates/header.php';
 ?>
 
-<h1>Your Orders</h1>
+<h1>Manage Orders</h1>
 <table border="1">
     <tr>
-        <th>Purchase Order ID</th>
-        <th>Order Date</th>
-        <th>Status</th>
+        <th>Order ID</th>
+        <th>Customer ID</th>
         <th>Total Amount</th>
+        <th>Status</th>
+        <th>Actions</th>
     </tr>
-    <?php if (empty($orders)): ?>
-        <tr><td colspan="4">No orders found.</td></tr>
-    <?php else: ?>
-        <?php foreach ($orders as $row): ?>
-            <tr>
-                <td><?php echo $row['purchase_order_id']; ?></td>
-                <td><?php echo $row['order_date']; ?></td>
-                <td><?php echo $row['status']; ?></td>
-                <td><?php echo $row['total_amount']; ?></td>
-            </tr>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    <?php foreach ($orders as $row): ?>
+        <tr>
+            <td><?php echo $row['order_id']; ?></td>
+            <td><?php echo $row['customer_id']; ?></td>
+            <td><?php echo $row['total_amount']; ?></td>
+            <td><?php echo $row['status']; ?></td>
+            <td>
+                <form method="POST" action="update_order_status.php">
+                    <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
+                    <select name="status">
+                        <option value="Pending" <?php echo $row['status'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
+                        <option value="Processing" <?php echo $row['status'] == 'Processing' ? 'selected' : ''; ?>>Processing</option>
+                        <option value="Shipped" <?php echo $row['status'] == 'Shipped' ? 'selected' : ''; ?>>Shipped</option>
+                        <option value="Delivered" <?php echo $row['status'] == 'Delivered' ? 'selected' : ''; ?>>Delivered</option>
+                        <option value="Canceled" <?php echo $row['status'] == 'Canceled' ? 'selected' : ''; ?>>Canceled</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
 </table>
 
 <?php

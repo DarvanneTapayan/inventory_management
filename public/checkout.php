@@ -12,6 +12,14 @@ if (empty($cart_items)) {
     exit;
 }
 
+// Check if the customer ID is set in the session
+if (!isset($_SESSION['user_id'])) {
+    echo "User ID is not set in the session.";
+    exit;
+} else {
+    echo "User ID: " . $_SESSION['user_id'];
+}
+
 // Create an Order object
 $database = new Database();
 $db = $database->getConnection();
@@ -21,7 +29,7 @@ $order = new Order($db);
 $total_amount = 0;
 
 // Validate customer ID from session
-$customer_id = $_SESSION['user_id']; // Assuming you have customer ID in session
+$customer_id = $_SESSION['user_id'];
 
 // Check if customer ID exists in users table
 $query = "SELECT * FROM users WHERE user_id = :user_id";

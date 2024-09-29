@@ -1,13 +1,13 @@
 <?php
 session_start();
 include_once '../config/database.php';
-include_once '../classes/User.php'; // Include User class
+include_once '../classes/User.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
 $user = new User($db);
-$error = "";
+$error = ""; // Variable for error messages
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
@@ -17,29 +17,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_data = $user->login($username, $password);
 
     if ($user_data) {
-        $_SESSION['user_id'] = $user_data['username']; // or user ID if available
-        $_SESSION['role_id'] = $user_data['role_id'];
+        // Store user data in session
+        $_SESSION['user_id'] = $user_data['user_id']; // Store user ID from database
+        $_SESSION['role_id'] = $user_data['role_id']; // Store role ID from database
 
         // Redirect based on role
         switch ($_SESSION['role_id']) {
-            case 1:
+            case 1: // Admin
                 header("Location: admin_dashboard.php");
                 break;
-            case 2:
+            case 2: // Manager
                 header("Location: manager_dashboard.php");
                 break;
-            case 3:
+            case 3: // Staff
                 header("Location: staff_dashboard.php");
                 break;
             case 4: // Customer
-                header("Location: customer_dashboard.php"); // Create a dashboard for customers
+                header("Location: customer_dashboard.php");
                 break;
             default:
                 header("Location: index.php");
         }
         exit;
     } else {
-        $error = "Invalid username or password.";
+        $error = "Invalid username or password."; // Set error message if login fails
     }
 }
 ?>
@@ -62,6 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <a href="signup.php">Create an account.</a>
+    <p><a href="signup.php">Don't have an account? Sign up here.</a></p>
 </body>
 </html>
