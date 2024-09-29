@@ -13,6 +13,7 @@ include_once '../classes/Supplier.php';
 include_once '../classes/PurchaseOrder.php';
 include_once '../classes/Sale.php';
 include_once '../classes/InventoryAdjustment.php';
+include_once '../classes/Order.php'; // Include Order class
 
 $database = new Database();
 $db = $database->getConnection();
@@ -24,6 +25,7 @@ $supplier = new Supplier($db);
 $purchaseOrder = new PurchaseOrder($db);
 $sale = new Sale($db);
 $inventoryAdjustment = new InventoryAdjustment($db);
+$order = new Order($db); // Instantiate Order class
 
 // Fetch data for display
 $products = $product->read();
@@ -63,6 +65,11 @@ include_once '../templates/header.php';
 <a href="view_inventory_adjustments.php">View Inventory Adjustments</a>
 <a href="add_inventory_adjustment.php">Add Inventory Adjustment</a>
 
+<h2>Manage Orders</h2>
+<a href="view_all_orders.php">View Orders</a> <!-- New Link -->
+<a href="add_order.php">Add Order</a> <!-- New Link -->
+
+<br>
 <a href="logout.php">Logout</a>
 
 <?php

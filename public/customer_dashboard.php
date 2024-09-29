@@ -17,26 +17,38 @@ $orders = $customer->fetchOrders($customer_id);
 $products = $customer->viewProducts();
 
 include_once '../templates/header.php';
+echo "Customer ID: " . $customer_id; // Debugging line
+
 ?>
 
 <h1>Customer Dashboard</h1>
-
+    
 <h2>Your Orders</h2>
 <table border="1">
     <tr>
         <th>Order ID</th>
+        <th>Product Name</th> <!-- Display Product Name -->
+        <th>Quantity</th> <!-- Display Quantity -->
         <th>Total Amount</th>
-        <th>Status</th>
         <th>Order Date</th>
+        <th>Status</th>
     </tr>
-    <?php foreach ($orders as $order): ?>
+    <?php if (count($orders) > 0): ?>
+        <?php foreach ($orders as $order): ?>
+            <tr>
+                <td><?php echo $order['order_id']; ?></td>
+                <td><?php echo $order['product_name']; ?></td> <!-- Display Product Name -->
+                <td><?php echo $order['quantity']; ?></td> <!-- Display Quantity -->
+                <td><?php echo $order['total_amount']; ?></td>
+                <td><?php echo $order['order_date']; ?></td>
+                <td><?php echo $order['status']; ?></td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
         <tr>
-            <td><?php echo $order['order_id']; ?></td>
-            <td><?php echo $order['total_amount']; ?></td>
-            <td><?php echo $order['status']; ?></td>
-            <td><?php echo $order['order_date']; ?></td>
+            <td colspan="6">No orders found.</td>
         </tr>
-    <?php endforeach; ?>
+    <?php endif; ?>
 </table>
 
 <h2>Available Products</h2>
@@ -64,5 +76,7 @@ include_once '../templates/header.php';
 </table>
 
 <a href="view_cart.php">View Cart</a>
+
+
 
 <?php include_once '../templates/footer.php'; ?>

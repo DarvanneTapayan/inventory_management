@@ -7,13 +7,17 @@ class Order {
         $this->conn = $db;
     }
 
+    // Create a new order
     public function create($customer_id, $total_amount) {
-        $query = "INSERT INTO " . $this->table_name . " (customer_id, total_amount, order_date) VALUES (:customer_id, :total_amount, NOW())";
+        $query = "INSERT INTO " . $this->table_name . " (customer_id, total_amount) VALUES (:customer_id, :total_amount)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':customer_id', $customer_id);
         $stmt->bindParam(':total_amount', $total_amount);
 
-        return $stmt->execute(); 
+        if ($stmt->execute()) {
+            return $this->conn->lastInsertId(); // Return the last inserted order ID
+        }
+        return false; // Return false if there was an error
     }
 
     public function read() {
@@ -51,5 +55,17 @@ class Order {
 
         return $stmt->execute();
     }
+
+    public function addOrderItem($order_id, $product_id, $quantity, $price) {
+        $query = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (:order_id, :product_id, :quantity, :price)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':order_id', $order_id);
+        $stmt->bindParam(':product_id', $product_id);
+        $stmt->bindParam(':quantity', $quantity);
+        $stmt->bindParam(':price', $price);
+    
+        return $stmt->execute();
+    }
+    
 }
 ?>

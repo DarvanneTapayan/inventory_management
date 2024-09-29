@@ -5,48 +5,35 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Check if the user is an Admin or Manager
-if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
-    echo "Access denied. You do not have permission to access this page.";
-    exit;
-}
-
 include_once '../config/database.php';
-include_once '../classes/Order.php';
+include_once '../classes/Customer.php';
 
 $database = new Database();
 $db = $database->getConnection();
-$order = new Order($db);
+$customer = new Customer($db);
 
-$orders = $order->read();
+$customer_id = $_SESSION['user_id'];
+$orders = $customer->fetchOrders($customer_id);
 
 include_once '../templates/header.php';
 ?>
 
-<h1>Orders List</h1>
+<h1>Your Order History</h1>
 <table border="1">
     <tr>
         <th>Order ID</th>
-        <th>Customer ID</th>
         <th>Total Amount</th>
         <th>Order Date</th>
         <th>Status</th>
-        <th>Actions</th>
     </tr>
-    <?php foreach ($orders as $row): ?>
+    <?php foreach ($orders as $order): ?>
         <tr>
-            <td><?php echo $row['order_id']; ?></td>
-            <td><?php echo $row['customer_id']; ?></td>
-            <td><?php echo $row['total_amount']; ?></td>
-            <td><?php echo $row['order_date']; ?></td>
-            <td><?php echo $row['status']; ?></td>
-            <td>
-                <a href="edit_purchase_order.php?id=<?php echo $row['order_id']; ?>">Edit</a> |
-                <a href="delete_purchase_order.php?id=<?php echo $row['order_id']; ?>">Delete</a>
-            </td>
+            <td><?php echo $order['order_id']; ?></td>
+            <td><?php echo $order['total_amount']; ?></td>
+            <td><?php echo $order['order_date']; ?></td>
+            <td><?php echo $order['status']; ?></td>
         </tr>
     <?php endforeach; ?>
 </table>
-<a href="add_purchase_order.php">Add Purchase Order</a>
 
 <?php include_once '../templates/footer.php'; ?>
