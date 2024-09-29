@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2024 at 10:00 AM
+-- Generation Time: Sep 29, 2024 at 01:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`category_id`, `category_name`, `description`, `created_at`) VALUES
 (1, 'Bakery', 'Category for bakery products, including cakes.', '2024-09-29 06:26:09'),
-(18, 'Beverage', 'Drinks, Milkteas anything drinkable', '2024-09-29 07:52:14');
+(21, 'Beverage', 'Category for beverage products, including milkteas.	', '2024-09-29 09:57:56');
 
 -- --------------------------------------------------------
 
@@ -57,6 +57,13 @@ CREATE TABLE `inventory_adjustments` (
   `adjustment_date` date NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory_adjustments`
+--
+
+INSERT INTO `inventory_adjustments` (`adjustment_id`, `product_id`, `adjustment_type`, `quantity`, `reason`, `adjustment_date`, `created_at`) VALUES
+(1, 1, 'increase', 100, 'WE NEED MORE!!', '2024-09-30', '2024-09-29 10:36:02');
 
 -- --------------------------------------------------------
 
@@ -83,7 +90,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `category_id`, `description`, `sku`, `price`, `quantity_in_stock`, `reorder_level`, `supplier_id`, `created_at`, `updated_at`) VALUES
-(1, 'Chocolate Cake', 1, 'A delicious chocolate cake.', 'CK001', 25.00, 50, 5, 1, '2024-09-29 06:26:18', '2024-09-29 06:26:18');
+(1, 'Chocolate Cake', 1, 'A delicious chocolate cake.', 'CK001', 50.00, 50, 5, 1, '2024-09-29 06:26:18', '2024-09-29 10:34:39');
 
 -- --------------------------------------------------------
 
@@ -126,6 +133,27 @@ CREATE TABLE `purchase_order_items` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `role_id` int(11) NOT NULL,
+  `role_name` varchar(50) NOT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`role_id`, `role_name`, `description`) VALUES
+(1, 'Admin', NULL),
+(2, 'Manager', NULL),
+(3, 'Staff', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sales`
 --
 
@@ -143,7 +171,8 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`sale_id`, `sale_date`, `customer_name`, `total_amount`, `status`, `created_at`) VALUES
-(1, '2024-10-01', 'John Smith', 25.00, 'Completed', '2024-09-29 06:26:22');
+(1, '2024-10-01', 'John Smith', 25.00, 'Completed', '2024-09-29 06:26:22'),
+(2, '2024-09-29', 'Jane', 123.00, 'Completed', '2024-09-29 10:53:16');
 
 -- --------------------------------------------------------
 
@@ -184,6 +213,30 @@ CREATE TABLE `suppliers` (
 INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `contact_name`, `phone`, `email`, `address`, `created_at`) VALUES
 (1, 'Local Bakery Supplies', 'Jane Doe', '555-9876', 'jane@bakerysupplies.com', '123 Baker St, Cake City', '2024-09-29 06:26:14'),
 (18, 'Gracymei\'s Beverages', 'Gracymei Alcala Turtosa', '09535166893', 'darvanne.alfatth@gmail.com', 'Barangay Gingoog st.123', '2024-09-29 07:55:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `role_id`, `created_at`) VALUES
+(1, 'admin123', '$2y$10$Xa7QgnfjVreTynw3yIOfA.W5FpHwb1hngnNT6dywg0HeYazj.REeK', 'admin@gmail.com', 1, '2024-09-29 08:16:43'),
+(2, 'manager123', '$2y$10$nxmLh9auRzNakcBPSxt.7OnVWnLM98gKyoPJ2GAAm1f8K8kMoER4m', 'manager@gmail.com', 2, '2024-09-29 08:26:36'),
+(3, 'staff123', '$2y$10$jjqvTfQ6nMp/Bikhm9SmA.NGGp1KNtsc6lks6K.YHy1Vpxb63RY6K', 'staff@gmail.com', 3, '2024-09-29 08:29:33');
 
 --
 -- Indexes for dumped tables
@@ -227,6 +280,13 @@ ALTER TABLE `purchase_order_items`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`role_id`),
+  ADD UNIQUE KEY `role_name` (`role_name`);
+
+--
 -- Indexes for table `sales`
 --
 ALTER TABLE `sales`
@@ -247,6 +307,15 @@ ALTER TABLE `suppliers`
   ADD PRIMARY KEY (`supplier_id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `role_id` (`role_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -254,13 +323,13 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `inventory_adjustments`
 --
 ALTER TABLE `inventory_adjustments`
-  MODIFY `adjustment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `adjustment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -281,10 +350,16 @@ ALTER TABLE `purchase_order_items`
   MODIFY `po_item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sale_items`
@@ -297,6 +372,12 @@ ALTER TABLE `sale_items`
 --
 ALTER TABLE `suppliers`
   MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -334,6 +415,12 @@ ALTER TABLE `purchase_order_items`
 ALTER TABLE `sale_items`
   ADD CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `sale_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
