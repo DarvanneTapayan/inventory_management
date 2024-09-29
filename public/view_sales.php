@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Check if the user is an Admin or Manager
-if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2 && $_SESSION['role_id'] != 3) { // 1 = Admin, 2 = Manager, 3 = Staff
+if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
     echo "Access denied. You do not have permission to access this page.";
     exit;
 }
@@ -16,11 +16,10 @@ include_once '../classes/Sale.php';
 
 $database = new Database();
 $db = $database->getConnection();
-
 $sale = new Sale($db);
+
 $sales = $sale->read();
 
-// Include header
 include_once '../templates/header.php';
 ?>
 
@@ -28,31 +27,26 @@ include_once '../templates/header.php';
 <table border="1">
     <tr>
         <th>Sale ID</th>
-        <th>Sale Date</th>
         <th>Customer Name</th>
         <th>Total Amount</th>
+        <th>Sale Date</th>
         <th>Status</th>
         <th>Actions</th>
     </tr>
     <?php foreach ($sales as $row): ?>
         <tr>
             <td><?php echo $row['sale_id']; ?></td>
-            <td><?php echo $row['sale_date']; ?></td>
             <td><?php echo $row['customer_name']; ?></td>
             <td><?php echo $row['total_amount']; ?></td>
+            <td><?php echo $row['sale_date']; ?></td>
             <td><?php echo $row['status']; ?></td>
             <td>
-                <?php if ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2): ?>
-                    <a href="edit_sale.php?id=<?php echo $row['sale_id']; ?>">Edit</a> |
-                    <a href="delete_sale.php?id=<?php echo $row['sale_id']; ?>">Delete</a>
-                <?php endif; ?>
+                <a href="edit_sale.php?id=<?php echo $row['sale_id']; ?>">Edit</a> |
+                <a href="delete_sale.php?id=<?php echo $row['sale_id']; ?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
 <a href="add_sale.php">Add Sale</a>
 
-<?php
-// Include footer
-include_once '../templates/footer.php';
-?>
+<?php include_once '../templates/footer.php'; ?>

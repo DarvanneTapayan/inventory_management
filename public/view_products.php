@@ -5,22 +5,15 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Check if the user is an Admin or Manager
-if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = Manager
-    echo "Access denied. You do not have permission to access this page.";
-    exit;
-}
-
 include_once '../config/database.php';
 include_once '../classes/Product.php';
 
 $database = new Database();
 $db = $database->getConnection();
-
 $product = new Product($db);
-$products = $product->read(); // Fetch all products
 
-// Include header
+$products = $product->read();
+
 include_once '../templates/header.php';
 ?>
 
@@ -48,7 +41,4 @@ include_once '../templates/header.php';
 </table>
 <a href="add_product.php">Add Product</a>
 
-<?php
-// Include footer
-include_once '../templates/footer.php';
-?>
+<?php include_once '../templates/footer.php'; ?>

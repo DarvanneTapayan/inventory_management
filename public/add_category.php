@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Check if the user is an Admin
-if ($_SESSION['role_id'] != 1) { // 1 = Admin
+if ($_SESSION['role_id'] != 1) {
     echo "Access denied. You do not have permission to access this page.";
     exit;
 }
@@ -30,18 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Include header
 include_once '../templates/header.php';
 ?>
 
 <h1>Add Category</h1>
 <form method="POST" action="">
     <input type="text" name="category_name" placeholder="Category Name" required>
-    <input type="text" name="description" placeholder="Description">
+    <textarea name="description" placeholder="Description"></textarea>
     <button type="submit">Add Category</button>
 </form>
 
-<?php
-// Include footer
-include_once '../templates/footer.php';
-?>
+<?php include_once '../templates/footer.php'; ?>

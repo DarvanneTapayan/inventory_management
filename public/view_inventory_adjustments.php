@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Check if the user is an Admin or Manager
-if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = Manager
+if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
     echo "Access denied. You do not have permission to access this page.";
     exit;
 }
@@ -16,11 +16,10 @@ include_once '../classes/InventoryAdjustment.php';
 
 $database = new Database();
 $db = $database->getConnection();
-
 $inventoryAdjustment = new InventoryAdjustment($db);
+
 $adjustments = $inventoryAdjustment->read();
 
-// Include header
 include_once '../templates/header.php';
 ?>
 
@@ -52,7 +51,4 @@ include_once '../templates/header.php';
 </table>
 <a href="add_inventory_adjustment.php">Add Inventory Adjustment</a>
 
-<?php
-// Include footer
-include_once '../templates/footer.php';
-?>
+<?php include_once '../templates/footer.php'; ?>
