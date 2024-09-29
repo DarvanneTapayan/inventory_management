@@ -1,7 +1,7 @@
 <?php
 class PurchaseOrder {
     private $conn;
-    private $table_name = "purchase_orders"; // Your actual table name
+    private $table_name = "purchase_orders"; 
 
     public function __construct($db) {
         $this->conn = $db;
@@ -37,7 +37,7 @@ class PurchaseOrder {
     }
 
     public function update($id, $supplier_id, $order_date, $status, $total_amount) {
-        $query = "UPDATE " . $this->table_name . " SET supplier_id = :supplier_id, order_date = :order_date, status = :status, total_amount = :total_amount WHERE order_id = :id";
+        $query = "UPDATE " . $this->table_name . " SET supplier_id = :supplier_id, order_date = :order_date, status = :status, total_amount = :total_amount WHERE purchase_order_id = :id";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':supplier_id', $supplier_id);

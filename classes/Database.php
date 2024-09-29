@@ -1,22 +1,30 @@
 <?php
 class Database {
-    private $host = "localhost";
-    private $db_name = "inventory_management"; // Your database name
-    private $username = "root"; // Your database username
-    private $password = ""; // Your database password
-    public $conn;
+    private $conn;
 
-    public function getConnection() {
-        $this->conn = null;
+    public function __construct($db_connection) {
+        $this->conn = $db_connection; 
+    }
 
-        try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
-        }
+    public function execute($query, $params = []) {
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt;
+    }
 
-        return $this->conn;
+    public function fetchAll($query, $params = []) {
+        $stmt = $this->execute($query, $params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function fetchOne($query, $params = []) {
+        $stmt = $this->execute($query, $params);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function executeUpdate($query, $params = []) {
+        $stmt = $this->execute($query, $params);
+        return $stmt->rowCount(); 
     }
 }
 ?>

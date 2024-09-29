@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Check if the user is an Admin or Manager
-if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = Manager
+if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
     echo "Access denied. You do not have permission to access this page.";
     exit;
 }
@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Include header
 include_once '../templates/header.php';
 ?>
 
@@ -76,7 +75,4 @@ include_once '../templates/header.php';
     <button type="submit">Add Product</button>
 </form>
 
-<?php
-// Include footer
-include_once '../templates/footer.php';
-?>
+<?php include_once '../templates/footer.php'; ?>

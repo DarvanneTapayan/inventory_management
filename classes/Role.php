@@ -1,7 +1,7 @@
 <?php
 class Role {
     private $conn;
-    private $table_name = "roles";
+    private $table_name = "roles"; 
 
     public function __construct($db) {
         $this->conn = $db;
@@ -14,3 +14,4 @@ class Role {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+?>

@@ -1,7 +1,7 @@
 <?php
 class InventoryAdjustment {
     private $conn;
-    private $table_name = "inventory_adjustments"; // Your actual table name
+    private $table_name = "inventory_adjustments"; 
 
     public function __construct($db) {
         $this->conn = $db;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2024 at 01:16 PM
+-- Generation Time: Sep 29, 2024 at 03:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,6 +64,42 @@ CREATE TABLE `inventory_adjustments` (
 
 INSERT INTO `inventory_adjustments` (`adjustment_id`, `product_id`, `adjustment_type`, `quantity`, `reason`, `adjustment_date`, `created_at`) VALUES
 (1, 1, 'increase', 100, 'WE NEED MORE!!', '2024-09-30', '2024-09-29 10:36:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `order_date` datetime DEFAULT current_timestamp(),
+  `status` varchar(20) DEFAULT 'Pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `customer_id`, `total_amount`, `order_date`, `status`) VALUES
+(4, 4, 600.00, '2024-09-29 20:31:48', 'Pending'),
+(5, 4, 50.00, '2024-09-29 20:52:07', 'Pending');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `order_item_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -149,7 +185,8 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`role_id`, `role_name`, `description`) VALUES
 (1, 'Admin', NULL),
 (2, 'Manager', NULL),
-(3, 'Staff', NULL);
+(3, 'Staff', NULL),
+(4, 'Customer', NULL);
 
 -- --------------------------------------------------------
 
@@ -236,7 +273,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `role_id`, `created_at`) VALUES
 (1, 'admin123', '$2y$10$Xa7QgnfjVreTynw3yIOfA.W5FpHwb1hngnNT6dywg0HeYazj.REeK', 'admin@gmail.com', 1, '2024-09-29 08:16:43'),
 (2, 'manager123', '$2y$10$nxmLh9auRzNakcBPSxt.7OnVWnLM98gKyoPJ2GAAm1f8K8kMoER4m', 'manager@gmail.com', 2, '2024-09-29 08:26:36'),
-(3, 'staff123', '$2y$10$jjqvTfQ6nMp/Bikhm9SmA.NGGp1KNtsc6lks6K.YHy1Vpxb63RY6K', 'staff@gmail.com', 3, '2024-09-29 08:29:33');
+(3, 'staff123', '$2y$10$jjqvTfQ6nMp/Bikhm9SmA.NGGp1KNtsc6lks6K.YHy1Vpxb63RY6K', 'staff@gmail.com', 3, '2024-09-29 08:29:33'),
+(4, 'customer123', '$2y$10$v9znyRtJbXFXwW6sNpj3n.WmeTE5eOXM1ZvNaEBTOdtzZU4CwGgQi', 'customer@gmail.com', 4, '2024-09-29 11:55:23');
 
 --
 -- Indexes for dumped tables
@@ -253,6 +291,21 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `inventory_adjustments`
   ADD PRIMARY KEY (`adjustment_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `customer_id` (`customer_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`order_item_id`),
+  ADD KEY `order_id` (`order_id`),
   ADD KEY `product_id` (`product_id`);
 
 --
@@ -332,6 +385,18 @@ ALTER TABLE `inventory_adjustments`
   MODIFY `adjustment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -353,7 +418,7 @@ ALTER TABLE `purchase_order_items`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -377,7 +442,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- Constraints for dumped tables
@@ -388,6 +453,19 @@ ALTER TABLE `users`
 --
 ALTER TABLE `inventory_adjustments`
   ADD CONSTRAINT `inventory_adjustments_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `products`

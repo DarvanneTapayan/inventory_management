@@ -13,10 +13,9 @@ $db = $database->getConnection();
 $customer = new Customer($db);
 
 $customer_id = $_SESSION['user_id'];
-$orders = $customer->fetchOrders($customer_id); // Fetches orders for the logged-in customer
-$products = $customer->viewProducts(); // Fetches all products
+$orders = $customer->fetchOrders($customer_id);
+$products = $customer->viewProducts();
 
-// Include header
 include_once '../templates/header.php';
 ?>
 
@@ -66,7 +65,4 @@ include_once '../templates/header.php';
 
 <a href="view_cart.php">View Cart</a>
 
-<?php
-// Include footer
-include_once '../templates/footer.php';
-?>
+<?php include_once '../templates/footer.php'; ?>

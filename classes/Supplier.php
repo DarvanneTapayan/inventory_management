@@ -1,7 +1,7 @@
 <?php
 class Supplier {
     private $conn;
-    private $table_name = "suppliers"; // Your actual table name
+    private $table_name = "suppliers"; 
 
     public function __construct($db) {
         $this->conn = $db;
