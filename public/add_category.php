@@ -29,20 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Error adding category.";
     }
 }
+
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Category</title>
-</head>
-<body>
-    <h1>Add Category</h1>
-    <form method="POST" action="">
-        <input type="text" name="category_name" placeholder="Category Name" required>
-        <input type="text" name="description" placeholder="Description">
-        <button type="submit">Add Category</button>
-    </form>
-</body>
-</html>
+<h1>Add Category</h1>
+<form method="POST" action="">
+    <input type="text" name="category_name" placeholder="Category Name" required>
+    <input type="text" name="description" placeholder="Description">
+    <button type="submit">Add Category</button>
+</form>
+
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>

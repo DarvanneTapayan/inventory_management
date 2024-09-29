@@ -12,25 +12,25 @@ if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = 
 }
 
 include_once '../config/database.php';
-include_once '../classes/Product.php';
+include_once '../classes/InventoryAdjustment.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-$product = new Product($db);
+$inventoryAdjustment = new InventoryAdjustment($db);
 
 if (isset($_GET['id'])) {
-    $product_id = $_GET['id'];
+    $adjustment_id = $_GET['id'];
 
-    if ($product->delete($product_id)) {
-        echo "Product deleted successfully.";
+    if ($inventoryAdjustment->delete($adjustment_id)) {
+        echo "Inventory Adjustment deleted successfully.";
     } else {
-        echo "Error deleting product.";
+        echo "Error deleting Inventory Adjustment.";
     }
 } else {
-    echo "No product ID specified.";
+    echo "No adjustment ID specified.";
 }
 
 ?>
 
-<a href="view_products.php">Back to Products List</a>
+<a href="view_inventory_adjustments.php">Back to Inventory Adjustments List</a>

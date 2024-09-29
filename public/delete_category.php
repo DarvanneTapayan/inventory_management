@@ -30,15 +30,7 @@ if (isset($_GET['id'])) {
 } else {
     echo "No category ID specified.";
 }
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Delete Category</title>
-</head>
-<body>
-    <a href="view_categories.php">Back to Categories List</a>
-</body>
-</html>
+<a href="view_categories.php">Back to Categories List</a>

@@ -37,35 +37,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Error adding Inventory Adjustment.";
     }
 }
+
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Inventory Adjustment</title>
-</head>
-<body>
-    <h1>Add Inventory Adjustment</h1>
-    <form method="POST" action="">
-        <label for="product_id">Select Product:</label>
-        <select name="product_id" id="product_id" required>
-            <option value="">Select a product</option>
-            <?php foreach ($products as $row): ?>
-                <option value="<?php echo $row['product_id']; ?>"><?php echo $row['product_name']; ?></option>
-            <?php endforeach; ?>
-        </select>
+<h1>Add Inventory Adjustment</h1>
+<form method="POST" action="">
+    <label for="product_id">Select Product:</label>
+    <select name="product_id" id="product_id" required>
+        <option value="">Select a product</option>
+        <?php foreach ($products as $row): ?>
+            <option value="<?php echo $row['product_id']; ?>"><?php echo $row['product_name']; ?></option>
+        <?php endforeach; ?>
+    </select>
 
-        <label for="adjustment_type">Adjustment Type:</label>
-        <select name="adjustment_type" id="adjustment_type" required>
-            <option value="Increase">Increase</option>
-            <option value="Decrease">Decrease</option>
-        </select>
+    <label for="adjustment_type">Adjustment Type:</label>
+    <select name="adjustment_type" id="adjustment_type" required>
+        <option value="increase">Increase</option>
+        <option value="decrease">Decrease</option>
+    </select>
 
-        <input type="number" name="quantity" placeholder="Quantity" required>
-        <input type="text" name="reason" placeholder="Reason">
-        <input type="date" name="adjustment_date" placeholder="Adjustment Date" required>
-        <button type="submit">Add Adjustment</button>
-    </form>
-</body>
-</html>
+    <input type="number" name="quantity" placeholder="Quantity" required>
+    <input type="text" name="reason" placeholder="Reason" required>
+    <input type="date" name="adjustment_date" required>
+    <button type="submit">Add Inventory Adjustment</button>
+</form>
+
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>

@@ -5,8 +5,8 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Check if the user is an Admin
-if ($_SESSION['role_id'] != 1) { // 1 = Admin
+// Check if the user is an Admin or Manager
+if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2 && $_SESSION['role_id'] != 3) { // 1 = Admin, 2 = Manager, 3 = Staff
     echo "Access denied. You do not have permission to access this page.";
     exit;
 }
@@ -19,38 +19,40 @@ $db = $database->getConnection();
 
 $sale = new Sale($db);
 $sales = $sale->read();
+
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>View Sales</title>
-</head>
-<body>
-    <h1>Sales List</h1>
-    <table>
+<h1>Sales List</h1>
+<table border="1">
+    <tr>
+        <th>Sale ID</th>
+        <th>Sale Date</th>
+        <th>Customer Name</th>
+        <th>Total Amount</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    <?php foreach ($sales as $row): ?>
         <tr>
-            <th>Sale ID</th>
-            <th>Sale Date</th>
-            <th>Customer Name</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        <?php foreach ($sales as $row): ?>
-            <tr>
-                <td><?php echo $row['sale_id']; ?></td>
-                <td><?php echo $row['sale_date']; ?></td>
-                <td><?php echo $row['customer_name']; ?></td>
-                <td><?php echo $row['total_amount']; ?></td>
-                <td><?php echo $row['status']; ?></td>
-                <td>
+            <td><?php echo $row['sale_id']; ?></td>
+            <td><?php echo $row['sale_date']; ?></td>
+            <td><?php echo $row['customer_name']; ?></td>
+            <td><?php echo $row['total_amount']; ?></td>
+            <td><?php echo $row['status']; ?></td>
+            <td>
+                <?php if ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2): ?>
                     <a href="edit_sale.php?id=<?php echo $row['sale_id']; ?>">Edit</a> |
                     <a href="delete_sale.php?id=<?php echo $row['sale_id']; ?>">Delete</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-</body>
-</html>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<a href="add_sale.php">Add Sale</a>
+
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>

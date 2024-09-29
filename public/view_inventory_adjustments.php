@@ -13,59 +13,46 @@ if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = 
 
 include_once '../config/database.php';
 include_once '../classes/InventoryAdjustment.php';
-include_once '../classes/Product.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
 $inventoryAdjustment = new InventoryAdjustment($db);
-$product = new Product($db);
+$adjustments = $inventoryAdjustment->read();
 
-// Fetch existing products
-$products = $product->read();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $product_id = $_POST['product_id'];
-    $adjustment_type = $_POST['adjustment_type'];
-    $quantity = $_POST['quantity'];
-    $reason = $_POST['reason'];
-    $adjustment_date = $_POST['adjustment_date'];
-
-    if ($inventoryAdjustment->create($product_id, $adjustment_type, $quantity, $reason, $adjustment_date)) {
-        echo "Inventory Adjustment added successfully.";
-    } else {
-        echo "Error adding Inventory Adjustment.";
-    }
-}
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Inventory Adjustment</title>
-</head>
-<body>
-    <h1>Add Inventory Adjustment</h1>
-    <form method="POST" action="">
-        <label for="product_id">Select Product:</label>
-        <select name="product_id" id="product_id" required>
-            <option value="">Select a product</option>
-            <?php foreach ($products as $row): ?>
-                <option value="<?php echo $row['product_id']; ?>"><?php echo $row['product_name']; ?></option>
-            <?php endforeach; ?>
-        </select>
+<h1>Inventory Adjustments List</h1>
+<table border="1">
+    <tr>
+        <th>Adjustment ID</th>
+        <th>Product ID</th>
+        <th>Adjustment Type</th>
+        <th>Quantity</th>
+        <th>Reason</th>
+        <th>Adjustment Date</th>
+        <th>Actions</th>
+    </tr>
+    <?php foreach ($adjustments as $row): ?>
+        <tr>
+            <td><?php echo $row['adjustment_id']; ?></td>
+            <td><?php echo $row['product_id']; ?></td>
+            <td><?php echo $row['adjustment_type']; ?></td>
+            <td><?php echo $row['quantity']; ?></td>
+            <td><?php echo $row['reason']; ?></td>
+            <td><?php echo $row['adjustment_date']; ?></td>
+            <td>
+                <a href="edit_inventory_adjustment.php?id=<?php echo $row['adjustment_id']; ?>">Edit</a> |
+                <a href="delete_inventory_adjustment.php?id=<?php echo $row['adjustment_id']; ?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<a href="add_inventory_adjustment.php">Add Inventory Adjustment</a>
 
-        <label for="adjustment_type">Adjustment Type:</label>
-        <select name="adjustment_type" id="adjustment_type" required>
-            <option value="Increase">Increase</option>
-            <option value="Decrease">Decrease</option>
-        </select>
-
-        <input type="number" name="quantity" placeholder="Quantity" required>
-        <input type="text" name="reason" placeholder="Reason">
-        <input type="date" name="adjustment_date" placeholder="Adjustment Date" required>
-        <button type="submit">Add Adjustment</button>
-    </form>
-</body>
-</html>
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>

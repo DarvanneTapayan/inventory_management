@@ -30,15 +30,7 @@ if (isset($_GET['id'])) {
 } else {
     echo "No supplier ID specified.";
 }
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Delete Supplier</title>
-</head>
-<body>
-    <a href="view_suppliers.php">Back to Suppliers List</a>
-</body>
-</html>
+<a href="view_suppliers.php">Back to Suppliers List</a>

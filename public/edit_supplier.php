@@ -21,7 +21,7 @@ $supplier = new Supplier($db);
 
 if (isset($_GET['id'])) {
     $supplier_id = $_GET['id'];
-    $existing_supplier = $supplier->readOne($supplier_id);
+    $existing_supplier = $supplier->readOne($supplier_id); // Fetch the existing supplier details
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $supplier_name = $_POST['supplier_name'];
@@ -40,23 +40,22 @@ if (isset($_GET['id'])) {
     echo "No supplier ID specified.";
     exit;
 }
+
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Supplier</title>
-</head>
-<body>
-    <h1>Edit Supplier</h1>
-    <form method="POST" action="">
-        <input type="text" name="supplier_name" value="<?php echo $existing_supplier['supplier_name']; ?>" required>
-        <input type="text" name="contact_name" value="<?php echo $existing_supplier['contact_name']; ?>">
-        <input type="text" name="phone" value="<?php echo $existing_supplier['phone']; ?>">
-        <input type="email" name="email" value="<?php echo $existing_supplier['email']; ?>">
-        <input type="text" name="address" value="<?php echo $existing_supplier['address']; ?>">
-        <button type="submit">Update Supplier</button>
-    </form>
-</body>
-</html>
+<h1>Edit Supplier</h1>
+<form method="POST" action="">
+    <input type="text" name="supplier_name" value="<?php echo $existing_supplier['supplier_name']; ?>" required>
+    <input type="text" name="contact_name" value="<?php echo $existing_supplier['contact_name']; ?>">
+    <input type="text" name="phone" value="<?php echo $existing_supplier['phone']; ?>">
+    <input type="email" name="email" value="<?php echo $existing_supplier['email']; ?>">
+    <input type="text" name="address" value="<?php echo $existing_supplier['address']; ?>">
+    <button type="submit">Update Supplier</button>
+</form>
+
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>

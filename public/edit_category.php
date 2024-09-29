@@ -21,7 +21,7 @@ $category = new Category($db);
 
 if (isset($_GET['id'])) {
     $category_id = $_GET['id'];
-    $existing_category = $category->readOne($category_id);
+    $existing_category = $category->readOne($category_id); // Fetch the existing category details
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $category_name = $_POST['category_name'];
@@ -37,20 +37,19 @@ if (isset($_GET['id'])) {
     echo "No category ID specified.";
     exit;
 }
+
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Category</title>
-</head>
-<body>
-    <h1>Edit Category</h1>
-    <form method="POST" action="">
-        <input type="text" name="category_name" value="<?php echo $existing_category['category_name']; ?>" required>
-        <input type="text" name="description" value="<?php echo $existing_category['description']; ?>">
-        <button type="submit">Update Category</button>
-    </form>
-</body>
-</html>
+<h1>Edit Category</h1>
+<form method="POST" action="">
+    <input type="text" name="category_name" value="<?php echo $existing_category['category_name']; ?>" required>
+    <input type="text" name="description" value="<?php echo $existing_category['description']; ?>">
+    <button type="submit">Update Category</button>
+</form>
+
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>

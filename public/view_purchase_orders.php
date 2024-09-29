@@ -19,38 +19,38 @@ $db = $database->getConnection();
 
 $purchaseOrder = new PurchaseOrder($db);
 $purchase_orders = $purchaseOrder->read();
+
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>View Purchase Orders</title>
-</head>
-<body>
-    <h1>Purchase Orders List</h1>
-    <table>
+<h1>Purchase Orders List</h1>
+<table border="1">
+    <tr>
+        <th>Order ID</th>
+        <th>Supplier ID</th>
+        <th>Order Date</th>
+        <th>Status</th>
+        <th>Total Amount</th>
+        <th>Actions</th>
+    </tr>
+    <?php foreach ($purchase_orders as $row): ?>
         <tr>
-            <th>Order ID</th>
-            <th>Supplier ID</th>
-            <th>Order Date</th>
-            <th>Status</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
+            <td><?php echo $row['order_id']; ?></td>
+            <td><?php echo $row['supplier_id']; ?></td>
+            <td><?php echo $row['order_date']; ?></td>
+            <td><?php echo $row['status']; ?></td>
+            <td><?php echo $row['total_amount']; ?></td>
+            <td>
+                <a href="edit_purchase_order.php?id=<?php echo $row['order_id']; ?>">Edit</a> |
+                <a href="delete_purchase_order.php?id=<?php echo $row['order_id']; ?>">Delete</a>
+            </td>
         </tr>
-        <?php foreach ($purchase_orders as $row): ?>
-            <tr>
-                <td><?php echo $row['order_id']; ?></td>
-                <td><?php echo $row['supplier_id']; ?></td>
-                <td><?php echo $row['order_date']; ?></td>
-                <td><?php echo $row['status']; ?></td>
-                <td><?php echo $row['total_amount']; ?></td>
-                <td>
-                    <a href="edit_purchase_order.php?id=<?php echo $row['order_id']; ?>">Edit</a> |
-                    <a href="delete_purchase_order.php?id=<?php echo $row['order_id']; ?>">Delete</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-</body>
-</html>
+    <?php endforeach; ?>
+</table>
+<a href="add_purchase_order.php">Add Purchase Order</a>
+
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>

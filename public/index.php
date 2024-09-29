@@ -4,8 +4,8 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
+include_once '../templates/header.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +13,6 @@ if (!isset($_SESSION['user_id'])) {
     <title>Inventory Management</title>
 </head>
 <body>
-    <h1>Inventory Management System</h1>
     <nav>
         <h2>Manage</h2>
         <ul>
@@ -33,3 +32,7 @@ if (!isset($_SESSION['user_id'])) {
     </nav>
 </body>
 </html>
+<?php
+// Include the footer from the templates folder
+include_once '../templates/footer.php';
+?>

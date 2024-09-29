@@ -43,41 +43,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Error adding product.";
     }
 }
+
+// Include header
+include_once '../templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Product</title>
-</head>
-<body>
-    <h1>Add Product</h1>
-    <form method="POST" action="">
-        <input type="text" name="product_name" placeholder="Product Name" required>
-        
-        <label for="category_id">Select Category:</label>
-        <select name="category_id" id="category_id" required>
-            <option value="">Select a category</option>
-            <?php foreach ($categories as $row): ?>
-                <option value="<?php echo $row['category_id']; ?>"><?php echo $row['category_name']; ?></option>
-            <?php endforeach; ?>
-        </select>
+<h1>Add Product</h1>
+<form method="POST" action="">
+    <input type="text" name="product_name" placeholder="Product Name" required>
+    
+    <label for="category_id">Select Category:</label>
+    <select name="category_id" id="category_id" required>
+        <option value="">Select a category</option>
+        <?php foreach ($categories as $row): ?>
+            <option value="<?php echo $row['category_id']; ?>"><?php echo $row['category_name']; ?></option>
+        <?php endforeach; ?>
+    </select>
 
-        <label for="supplier_id">Select Supplier:</label>
-        <select name="supplier_id" id="supplier_id" required>
-            <option value="">Select a supplier</option>
-            <?php foreach ($suppliers as $row): ?>
-                <option value="<?php echo $row['supplier_id']; ?>"><?php echo $row['supplier_name']; ?></option>
-            <?php endforeach; ?>
-        </select>
+    <label for="supplier_id">Select Supplier:</label>
+    <select name="supplier_id" id="supplier_id" required>
+        <option value="">Select a supplier</option>
+        <?php foreach ($suppliers as $row): ?>
+            <option value="<?php echo $row['supplier_id']; ?>"><?php echo $row['supplier_name']; ?></option>
+        <?php endforeach; ?>
+    </select>
 
-        <input type="text" name="description" placeholder="Description">
-        <input type="text" name="sku" placeholder="SKU" required>
-        <input type="number" name="price" placeholder="Price" required>
-        <input type="number" name="quantity_in_stock" placeholder="Quantity in Stock" required>
-        <input type="number" name="reorder_level" placeholder="Reorder Level">
-        <button type="submit">Add Product</button>
-    </form>
-</body>
-</html>
+    <input type="text" name="description" placeholder="Description">
+    <input type="text" name="sku" placeholder="SKU" required>
+    <input type="number" name="price" placeholder="Price" required>
+    <input type="number" name="quantity_in_stock" placeholder="Quantity in Stock" required>
+    <input type="number" name="reorder_level" placeholder="Reorder Level">
+    <button type="submit">Add Product</button>
+</form>
+
+<?php
+// Include footer
+include_once '../templates/footer.php';
+?>
