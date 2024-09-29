@@ -1,5 +1,3 @@
-Here's a revised and organized version of your README file with **bold text** for clarity and improved readability:
-
 ---
 
 # Inventory Management System
