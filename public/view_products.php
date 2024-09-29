@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Check if the user is an Admin or Manager
+if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = Manager
+    echo "Access denied. You do not have permission to access this page.";
+    exit;
+}
+
 include_once '../config/database.php';
 include_once '../classes/Product.php';
 
@@ -23,18 +35,20 @@ $products = $product->read();
             <th>Name</th>
             <th>Price</th>
             <th>Quantity</th>
-            <!-- Other headers -->
+            <th>Actions</th>
         </tr>
-        <?php
-        foreach ($products as $row) {
-            echo "<tr>";
-            echo "<td>{$row['product_id']}</td>";
-            echo "<td>{$row['product_name']}</td>";
-            echo "<td>{$row['price']}</td>";
-            echo "<td>{$row['quantity_in_stock']}</td>";
-            echo "</tr>";
-        }
-        ?>
+        <?php foreach ($products as $row): ?>
+            <tr>
+                <td><?php echo $row['product_id']; ?></td>
+                <td><?php echo $row['product_name']; ?></td>
+                <td><?php echo $row['price']; ?></td>
+                <td><?php echo $row['quantity_in_stock']; ?></td>
+                <td>
+                    <a href="edit_product.php?id=<?php echo $row['product_id']; ?>">Edit</a> |
+                    <a href="delete_product.php?id=<?php echo $row['product_id']; ?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
     </table>
 </body>
 </html>

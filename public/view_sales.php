@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Check if the user is an Admin
+if ($_SESSION['role_id'] != 1) { // 1 = Admin
+    echo "Access denied. You do not have permission to access this page.";
+    exit;
+}
+
 include_once '../config/database.php';
 include_once '../classes/Sale.php';
 
@@ -24,18 +36,21 @@ $sales = $sale->read();
             <th>Customer Name</th>
             <th>Total Amount</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
-        <?php
-        foreach ($sales as $row) {
-            echo "<tr>";
-            echo "<td>{$row['sale_id']}</td>";
-            echo "<td>{$row['sale_date']}</td>";
-            echo "<td>{$row['customer_name']}</td>";
-            echo "<td>{$row['total_amount']}</td>";
-            echo "<td>{$row['status']}</td>";
-            echo "</tr>";
-        }
-        ?>
+        <?php foreach ($sales as $row): ?>
+            <tr>
+                <td><?php echo $row['sale_id']; ?></td>
+                <td><?php echo $row['sale_date']; ?></td>
+                <td><?php echo $row['customer_name']; ?></td>
+                <td><?php echo $row['total_amount']; ?></td>
+                <td><?php echo $row['status']; ?></td>
+                <td>
+                    <a href="edit_sale.php?id=<?php echo $row['sale_id']; ?>">Edit</a> |
+                    <a href="delete_sale.php?id=<?php echo $row['sale_id']; ?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
     </table>
 </body>
 </html>

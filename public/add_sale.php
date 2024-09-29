@@ -1,11 +1,28 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Check if the user is a Manager or Admin
+if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = Manager
+    echo "Access denied. You do not have permission to access this page.";
+    exit;
+}
+
 include_once '../config/database.php';
 include_once '../classes/Sale.php';
+include_once '../classes/Product.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
 $sale = new Sale($db);
+$product = new Product($db);
+
+// Fetch existing products
+$products = $product->read();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sale_date = $_POST['sale_date'];
@@ -33,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="date" name="sale_date" placeholder="Sale Date" required>
         <input type="text" name="customer_name" placeholder="Customer Name" required>
         <input type="number" name="total_amount" placeholder="Total Amount" required>
-        <input type="text" name="status" placeholder="Status">
+        <input type="text" name="status" placeholder="Status" required>
         <button type="submit">Add Sale</button>
     </form>
 </body>

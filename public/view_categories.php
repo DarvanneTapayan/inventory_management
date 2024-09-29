@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Check if the user is an Admin
+if ($_SESSION['role_id'] != 1) { // 1 = Admin
+    echo "Access denied. You do not have permission to access this page.";
+    exit;
+}
+
 include_once '../config/database.php';
 include_once '../classes/Category.php';
 
@@ -22,16 +34,19 @@ $categories = $category->read();
             <th>Category ID</th>
             <th>Category Name</th>
             <th>Description</th>
+            <th>Actions</th>
         </tr>
-        <?php
-        foreach ($categories as $row) {
-            echo "<tr>";
-            echo "<td>{$row['category_id']}</td>";
-            echo "<td>{$row['category_name']}</td>";
-            echo "<td>{$row['description']}</td>";
-            echo "</tr>";
-        }
-        ?>
+        <?php foreach ($categories as $row): ?>
+            <tr>
+                <td><?php echo $row['category_id']; ?></td>
+                <td><?php echo $row['category_name']; ?></td>
+                <td><?php echo $row['description']; ?></td>
+                <td>
+                    <a href="edit_category.php?id=<?php echo $row['category_id']; ?>">Edit</a> |
+                    <a href="delete_category.php?id=<?php echo $row['category_id']; ?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
     </table>
 </body>
 </html>

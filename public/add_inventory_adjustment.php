@@ -1,26 +1,36 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Check if the user is an Admin or Manager
+if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) { // 1 = Admin, 2 = Manager
+    echo "Access denied. You do not have permission to access this page.";
+    exit;
+}
+
 include_once '../config/database.php';
 include_once '../classes/InventoryAdjustment.php';
-include_once '../classes/Product.php'; // Include Product class
+include_once '../classes/Product.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
 $inventoryAdjustment = new InventoryAdjustment($db);
-$product = new Product($db); // Create a new Product object
+$product = new Product($db);
 
 // Fetch existing products
-$products = $product->read(); // Fetch products
+$products = $product->read();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize and assign the input data
-    $product_id = $_POST['product_id']; // From product dropdown
-    $adjustment_type = $_POST['adjustment_type']; // From adjustment type dropdown
+    $product_id = $_POST['product_id'];
+    $adjustment_type = $_POST['adjustment_type'];
     $quantity = $_POST['quantity'];
     $reason = $_POST['reason'];
     $adjustment_date = $_POST['adjustment_date'];
 
-    // Call the create method
     if ($inventoryAdjustment->create($product_id, $adjustment_type, $quantity, $reason, $adjustment_date)) {
         echo "Inventory Adjustment added successfully.";
     } else {
@@ -38,16 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <h1>Add Inventory Adjustment</h1>
     <form method="POST" action="">
-        <!-- Dropdown for Products -->
         <label for="product_id">Select Product:</label>
         <select name="product_id" id="product_id" required>
-            <option value="">Select a product</option> <!-- Placeholder option -->
+            <option value="">Select a product</option>
             <?php foreach ($products as $row): ?>
                 <option value="<?php echo $row['product_id']; ?>"><?php echo $row['product_name']; ?></option>
             <?php endforeach; ?>
         </select>
 
-        <!-- Dropdown for Adjustment Type -->
         <label for="adjustment_type">Adjustment Type:</label>
         <select name="adjustment_type" id="adjustment_type" required>
             <option value="Increase">Increase</option>
