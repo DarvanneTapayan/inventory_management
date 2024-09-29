@@ -20,9 +20,9 @@ $db = $database->getConnection();
 $purchaseOrder = new PurchaseOrder($db);
 
 if (isset($_GET['id'])) {
-    $order_id = $_GET['id'];
+    $purchase_order_id = $_GET['id'];
 
-    if ($purchaseOrder->delete($order_id)) {
+    if ($purchaseOrder->delete($purchase_order_id)) {
         echo "Purchase Order deleted successfully.";
     } else {
         echo "Error deleting Purchase Order.";

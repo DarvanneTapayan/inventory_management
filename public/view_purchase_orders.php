@@ -34,19 +34,23 @@ include_once '../templates/header.php';
         <th>Total Amount</th>
         <th>Actions</th>
     </tr>
-    <?php foreach ($purchase_orders as $row): ?>
-        <tr>
-            <td><?php echo $row['order_id']; ?></td>
-            <td><?php echo $row['supplier_id']; ?></td>
-            <td><?php echo $row['order_date']; ?></td>
-            <td><?php echo $row['status']; ?></td>
-            <td><?php echo $row['total_amount']; ?></td>
-            <td>
-                <a href="edit_purchase_order.php?id=<?php echo $row['order_id']; ?>">Edit</a> |
-                <a href="delete_purchase_order.php?id=<?php echo $row['order_id']; ?>">Delete</a>
-            </td>
-        </tr>
-    <?php endforeach; ?>
+    <?php if (empty($purchase_orders)): ?>
+        <tr><td colspan="6">No purchase orders found.</td></tr>
+    <?php else: ?>
+        <?php foreach ($purchase_orders as $row): ?>
+            <tr>
+                <td><?php echo $row['purchase_order_id']; ?></td>
+                <td><?php echo $row['supplier_id']; ?></td>
+                <td><?php echo $row['order_date']; ?></td>
+                <td><?php echo $row['status']; ?></td>
+                <td><?php echo $row['total_amount']; ?></td>
+                <td>
+                    <a href="edit_purchase_order.php?id=<?php echo $row['purchase_order_id']; ?>">Edit</a> |
+                    <a href="delete_purchase_order.php?id=<?php echo $row['purchase_order_id']; ?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </table>
 <a href="add_purchase_order.php">Add Purchase Order</a>
 

@@ -25,8 +25,8 @@ $supplier = new Supplier($db);
 $suppliers = $supplier->read();
 
 if (isset($_GET['id'])) {
-    $order_id = $_GET['id'];
-    $existing_order = $purchaseOrder->readOne($order_id); // Fetch the existing purchase order details
+    $purchase_order_id = $_GET['id'];
+    $existing_order = $purchaseOrder->readOne($purchase_order_id); // Fetch the existing purchase order details
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $supplier_id = $_POST['supplier_id'];
@@ -34,7 +34,7 @@ if (isset($_GET['id'])) {
         $status = $_POST['status'];
         $total_amount = $_POST['total_amount'];
 
-        if ($purchaseOrder->update($order_id, $supplier_id, $order_date, $status, $total_amount)) {
+        if ($purchaseOrder->update($purchase_order_id, $supplier_id, $order_date, $status, $total_amount)) {
             echo "Purchase Order updated successfully.";
         } else {
             echo "Error updating Purchase Order.";

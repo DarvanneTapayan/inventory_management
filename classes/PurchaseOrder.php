@@ -23,12 +23,12 @@ class PurchaseOrder {
         $query = "SELECT * FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-
+    
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function readOne($id) {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE order_id = :id LIMIT 1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE purchase_order_id = :id LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -50,7 +50,7 @@ class PurchaseOrder {
     }
 
     public function delete($id) {
-        $query = "DELETE FROM " . $this->table_name . " WHERE order_id = :id";
+        $query = "DELETE FROM " . $this->table_name . " WHERE purchase_order_id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
 
