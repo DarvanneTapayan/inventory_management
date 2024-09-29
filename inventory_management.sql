@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2024 at 09:44 AM
+-- Generation Time: Sep 29, 2024 at 10:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,8 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`category_id`, `category_name`, `description`, `created_at`) VALUES
-(1, 'Bakery', 'Category for bakery products, including cakes.', '2024-09-29 06:26:09');
+(1, 'Bakery', 'Category for bakery products, including cakes.', '2024-09-29 06:26:09'),
+(18, 'Beverage', 'Drinks, Milkteas anything drinkable', '2024-09-29 07:52:14');
 
 -- --------------------------------------------------------
 
@@ -181,7 +182,8 @@ CREATE TABLE `suppliers` (
 --
 
 INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `contact_name`, `phone`, `email`, `address`, `created_at`) VALUES
-(1, 'Local Bakery Supplies', 'Jane Doe', '555-9876', 'jane@bakerysupplies.com', '123 Baker St, Cake City', '2024-09-29 06:26:14');
+(1, 'Local Bakery Supplies', 'Jane Doe', '555-9876', 'jane@bakerysupplies.com', '123 Baker St, Cake City', '2024-09-29 06:26:14'),
+(18, 'Gracymei\'s Beverages', 'Gracymei Alcala Turtosa', '09535166893', 'darvanne.alfatth@gmail.com', 'Barangay Gingoog st.123', '2024-09-29 07:55:00');
 
 --
 -- Indexes for dumped tables
@@ -252,7 +254,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `inventory_adjustments`
@@ -294,7 +296,7 @@ ALTER TABLE `sale_items`
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
